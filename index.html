@@ -1,449 +1,511 @@
 
-
 <!DOCTYPE html>
-
 <html lang="bn">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Plastic Products Catalog</title>
+<title>AP PLASTIC | Plastic Products</title>
+<meta name="description" content="AP PLASTIC plastic product catalogue and ordering website">
 
 <style>
-
 *{box-sizing:border-box}
-
-body{
-
-  margin:0;
-
-  font-family:Arial,sans-serif;
-
-  background:#f3f6fa;
-
-  color:#172b3a
-
-}
-
-header{
-
-  background:#12314a;
-
-  color:white;
-
-  text-align:center;
-
-  padding:28px 14px
-
-}
-
-header h1{margin:0 0 10px;font-size:27px}
-
-header p{margin:5px;color:#d6e7f5}
-
-main{max-width:1100px;margin:auto;padding:18px 12px}
-
-.controls{display:grid;gap:10px;margin:15px 0}
-
-input,select{
-
-  width:100%;
-
-  padding:13px;
-
-  border:1px solid #ccd6df;
-
-  border-radius:9px;
-
-  background:white;
-
-  font-size:16px
-
-}
-
-.summary{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  flex-wrap:wrap;
-
-  gap:8px;
-
-  margin:18px 0
-
-}
-
-.grid{
-
-  display:grid;
-
-  grid-template-columns:repeat(2,minmax(0,1fr));
-
-  gap:12px
-
-}
-
-.card{
-
-  background:white;
-
-  border:1px solid #e0e7ee;
-
-  border-radius:12px;
-
-  overflow:hidden
-
-}
-
-.photo{
-
-  height:130px;
-
-  background:#e5eef6;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  font-size:48px
-
-}
-
-.photo img{width:100%;height:100%;object-fit:cover}
-
-.info{padding:12px}
-
-.info h3{font-size:16px;margin:0 0 8px}
-
-.code,.category{font-size:12px;color:#64748b}
-
-.price{font-size:20px;font-weight:bold;color:#08794d;margin:10px 0}
-
-footer{text-align:center;padding:25px;color:#657789}
-
-@media(min-width:650px){
-
-  .controls{grid-template-columns:2fr 1fr 1fr}
-
-  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-
-  .photo{height:160px}
-
-}
-
+body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#202733}
+header{background:#075e45;color:white;text-align:center;padding:22px 12px}
+header h1{margin:0 0 8px;font-size:30px}
+header p{margin:6px 0}
+.container{max-width:1150px;margin:auto;padding:15px}
+.notice{background:#e1f5eb;padding:12px;border-radius:9px;margin-bottom:15px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+input,select,textarea,button{font:inherit}
+.tools input,.tools select{flex:1;min-width:135px;padding:12px;border:1px solid #ccd3d9;border-radius:8px;background:white}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:white;border:1px solid #e6e9ec;border-radius:10px;overflow:hidden;box-shadow:0 2px 7px #0000000c}
+.product-image{width:100%;height:140px;object-fit:contain;display:block;background:white}
+.placeholder{height:140px;display:none;align-items:center;justify-content:center;background:#e9efec;font-size:38px}
+.card-info{padding:10px}
+.card h3{font-size:15px;margin:6px 0}
+.category,.code{font-size:12px;color:#6b7280}
+.price{font-size:19px;color:#08794f;font-weight:bold;margin:9px 0}
+button{border:0;border-radius:7px;padding:10px 12px;cursor:pointer}
+.details-btn{width:100%;margin-bottom:7px;background:#e8f3ee;color:#075e45;border:1px solid #08794f}
+.add-btn,.primary{width:100%;background:#08794f;color:white;font-weight:bold}
+button:disabled{opacity:.5;cursor:not-allowed}
+.cart,.checkout{background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px #0000000c}
+.cart h2,.checkout h2{font-size:20px;margin:0 0 12px}
+.cart-row{padding:12px 0;border-bottom:1px solid #e5e7eb}
+.cart-name{font-weight:bold;font-size:14px}
+.cart-sub{font-size:12px;color:#6b7280;margin-top:5px}
+.cart-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.qty-btn{width:34px;height:34px;background:#e7f3ed;color:#075e45;font-size:20px;padding:0}
+.remove-btn{background:#fff0f0;color:#a52222}
+.total{display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:18px;margin-top:15px}
+.empty{text-align:center;padding:16px;color:#727984}
+.checkout label{display:block;font-size:14px;margin:12px 0 5px}
+.checkout input,.checkout select,.checkout textarea{width:100%;padding:11px;border:1px solid #ccd3d9;border-radius:7px;background:white}
+.checkout textarea{min-height:70px}
+.checkout .primary{margin-top:15px}
+.small-note{font-size:12px;color:#6b7280;line-height:1.6}
+.modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:14px;background:#0009}
+.modal.open{display:flex}
+.modal-content{position:relative;background:white;width:100%;max-width:480px;max-height:90vh;overflow:auto;border-radius:14px;padding:18px}
+.close-modal{position:absolute;right:10px;top:10px;border-radius:50%;background:#eee;font-size:24px;width:38px;height:38px;padding:0}
+.modal-image{width:100%;height:230px;object-fit:contain;background:#f7f8f8;border-radius:9px;margin-bottom:12px}
+.modal-price{font-size:24px;font-weight:bold;color:#08794f;margin:12px 0}
+.modal-description{white-space:pre-wrap;line-height:1.7;color:#4b5563;overflow-wrap:anywhere}
+.modal-category{font-size:12px;background:#e8f3ee;padding:5px 10px;border-radius:20px;color:#075e45}
+footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:13px}
+@media(min-width:600px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.product-image,.placeholder{height:170px}}
+@media(min-width:900px){.layout{grid-template-columns:minmax(0,1.7fr) minmax(290px,1fr)}.side{position:sticky;top:10px}}
 </style>
-
 </head>
-
 <body>
 
 <header>
-
-  <h1 id="factoryName">AP PLASTIC</h1>
-
-  <p>Plastic Injection Molding Products</p>
-
-  <p>আমাদের সব পণ্য এক জায়গায় দেখুন</p>
-
+  <h1>AP PLASTIC</h1>
+  <p>Quality Plastic Products</p>
+  <p>পণ্য দেখুন, নির্বাচন করুন এবং অর্ডার করুন</p>
   <p>যোগাযোগ: 01909447236</p>
-
 </header>
 
-<main>
+<main class="container">
+  <div class="notice">🛍️ পণ্য নির্বাচন করুন, বিস্তারিত দেখুন, কার্টে যোগ করুন এবং WhatsApp-এ অর্ডার পাঠান।</div>
 
-  <h2>আমাদের পণ্যসমূহ</h2>
-
-  <div class="controls">
-
-    <input id="search" placeholder="পণ্যের নাম বা কোড লিখুন">
-
-    <select id="category">
-
-      <option value="">সব ক্যাটাগরি</option>
-
-    </select>
-
-    <select id="sort">
-
-      <option value="default">সাধারণ ক্রম</option>
-
-      <option value="low">দাম: কম থেকে বেশি</option>
-
-      <option value="high">দাম: বেশি থেকে কম</option>
-
-    </select>
-
+  <div class="tools">
+    <input id="search" type="search" placeholder="পণ্যের নাম বা কোড খুঁজুন...">
+    <select id="category"><option value="">সব ক্যাটাগরি</option></select>
   </div>
 
-  <div class="summary">
+  <div class="layout">
+    <section>
+      <h2>আমাদের পণ্য (<span id="productCount">200</span>)</h2>
+      <div id="products" class="products"></div>
+      <p id="noProducts" class="empty" hidden>কোনো পণ্য পাওয়া যায়নি।</p>
+    </section>
 
-    <strong id="count">পণ্য: ০</strong>
+    <aside class="side">
+      <section class="cart">
+        <h2>🛒 কার্ট (<span id="cartCount">0</span>)</h2>
+        <div id="cartItems"></div>
+        <div class="total"><span>মোট দাম</span><span id="total">৳0</span></div>
+        <p class="small-note">ডেলিভারি খরচ আলাদাভাবে নিশ্চিত করা হবে।</p>
+        <button id="clearCart" type="button" class="remove-btn">কার্ট খালি করুন</button>
+      </section>
 
-    <span>দাম বাংলাদেশি টাকায় (৳)</span>
+      <section class="checkout">
+        <h2>অর্ডারের তথ্য</h2>
+        <form id="orderForm">
+          <label for="customerType">ক্রেতার ধরন</label>
+          <select id="customerType">
+            <option value="খুচরা ক্রেতা">খুচরা ক্রেতা</option>
+            <option value="পাইকারি ক্রেতা">পাইকারি ক্রেতা</option>
+          </select>
 
+          <label for="customerName">নাম *</label>
+          <input id="customerName" required maxlength="100" placeholder="আপনার নাম">
+
+          <label for="customerPhone">মোবাইল নম্বর *</label>
+          <input id="customerPhone" type="tel" required maxlength="25" placeholder="01XXXXXXXXX">
+
+          <label for="customerAddress">সম্পূর্ণ ঠিকানা *</label>
+          <textarea id="customerAddress" required maxlength="500" placeholder="ডেলিভারির ঠিকানা"></textarea>
+
+          <label for="customerNote">অতিরিক্ত কথা</label>
+          <textarea id="customerNote" maxlength="500" placeholder="পাইকারি পরিমাণ বা বিশেষ অনুরোধ"></textarea>
+
+          <button class="primary" type="submit">WhatsApp-এ অর্ডার পাঠান</button>
+          <p class="small-note">WhatsApp খুললে অর্ডারের মেসেজ দেখে Send চাপুন।</p>
+        </form>
+      </section>
+    </aside>
   </div>
-
-  <div id="products" class="grid"></div>
-
 </main>
 
+<div id="detailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+  <div class="modal-content">
+    <button id="closeModal" class="close-modal" type="button" aria-label="বন্ধ করুন">×</button>
+    <img id="modalImage" class="modal-image" src="" alt="পণ্যের ছবি">
+    <div><span id="modalCategory" class="modal-category"></span></div>
+    <p id="modalCode" class="code"></p>
+    <h2 id="modalName"></h2>
+    <div id="modalPrice" class="modal-price"></div>
+    <p id="modalDescription" class="modal-description"></p>
+    <button id="modalAdd" type="button" class="add-btn">+ কার্টে যোগ করুন</button>
+  </div>
+</div>
+
 <footer>
-
-  পণ্যের দাম ও বিস্তারিত জানতে ফ্যাক্টরির সঙ্গে যোগাযোগ করুন।
-
+  <strong>AP PLASTIC</strong>
+  <p>যোগাযোগ: 01909447236</p>
+  <p>© AP PLASTIC</p>
 </footer>
 
 <script>
-
-const products = [
-
-  {
-
-    code:"P-001",
-
-    name:"প্লাস্টিক কন্টেইনার",
-
-    category:"কন্টেইনার",
-
-    price:50,
-
-    emoji:"",
-
-    image:"images/image.jpg"
-
-  },
-
-  {
-
-    code:"P-002",
-
-    name:"প্লাস্টিক ঝুড়ি",
-
-    category:"ঝুড়ি",
-
-    price:120,
-
-    emoji:"🧺",
-
-    image:""
-
-  },
-
-  {
-
-    code:"P-003",
-
-    name:"প্লাস্টিক ঢাকনা",
-
-    category:"ঢাকনা",
-
-    price:15,
-
-    emoji:"🥣",
-
-    image:""
-
-  },
-
-  {
-
-    code:"P-004",
-
-    name:"প্লাস্টিক মগ",
-
-    category:"ঘরোয়া পণ্য",
-
-    price:35,
-
-    emoji:"🥤",
-
-    image:""
-
-  },
-
-  {
-
-    code:"P-005",
-
-    name:"প্লাস্টিক বক্স",
-
-    category:"কন্টেইনার",
-
-    price:80,
-
-    emoji:"📦",
-
-    image:""
-
-  },
-
-  {
-
-    code:"P-006",
-
-    name:"প্লাস্টিক কাপ",
-
-    category:"ঘরোয়া পণ্য",
-
-    price:20,
-
-    emoji:"🥤",
-
-    image:""
-
-  }
-
-];
-
-const search = document.getElementById("search");
-
-const category = document.getElementById("category");
-
-const sort = document.getElementById("sort");
-
-const container = document.getElementById("products");
-
-[...new Set(products.map(p => p.category))].forEach(c => {
-
-  const option = document.createElement("option");
-
-  option.value = c;
-
-  option.textContent = c;
-
-  category.appendChild(option);
-
-});
-
-function showProducts() {
-
-  let list = products.filter(p =>
-
-    (p.name + " " + p.code)
-
-      .toLowerCase()
-
-      .includes(search.value.trim().toLowerCase()) &&
-
-    (!category.value || p.category === category.value)
-
-  );
-
-  if (sort.value === "low") {
-
-    list.sort((a,b) => a.price - b.price);
-
-  }
-
-  if (sort.value === "high") {
-
-    list.sort((a,b) => b.price - a.price);
-
-  }
-
-  document.getElementById("count").textContent =
-
-    "পণ্য: " + list.length;
-
-  container.replaceChildren();
-
-  if (list.length === 0) {
-
-    container.textContent = "কোনো পণ্য পাওয়া যায়নি।";
-
-    return;
-
-  }
-
-  list.forEach(p => {
-
-    const card = document.createElement("article");
-
-    card.className = "card";
-
-    const photo = document.createElement("div");
-
-    photo.className = "photo";
-
-    if (p.image) {
-
-      const img = document.createElement("img");
-
-      img.src = p.image;
-
-      img.alt = p.name;
-
-      img.loading = "lazy";
-
-      img.onerror = () => {
-
-        photo.textContent = p.emoji || "📦";
-
-      };
-
-      photo.appendChild(img);
-
-    } else {
-
-      photo.textContent = p.emoji || "📦";
-
-    }
-
-    const info = document.createElement("div");
-
-    info.className = "info";
-
-    const name = document.createElement("h3");
-
-    name.textContent = p.name;
-
-    const code = document.createElement("div");
-
-    code.className = "code";
-
-    code.textContent = "কোড: " + p.code;
-
-    const price = document.createElement("div");
-
-    price.className = "price";
-
-    price.textContent =
-
-      "৳ " + Number(p.price).toLocaleString("en-BD");
-
-    const cat = document.createElement("div");
-
-    cat.className = "category";
-
-    cat.textContent = p.category;
-
-    info.append(name, code, price, cat);
-
-    card.append(photo, info);
-
-    container.appendChild(card);
-
-  });
-
+/*
+==========================================================
+AP PLASTIC - ২০০ পণ্যের ক্যাটালগ
+==========================================================
+
+নাম, দাম, ছবি ও বিবরণ পরিবর্তন করতে productEdits-এ
+পণ্যের নম্বর লিখে তথ্য যোগ করুন।
+
+উদাহরণ:
+1: {
+  name: "প্লাস্টিক কন্টেইনার",
+  category: "কন্টেইনার",
+  price: 50,
+  image: "images/image.jpg",
+  description: "পণ্যের বিস্তারিত বিবরণ"
 }
 
-search.addEventListener("input", showProducts);
+ছবি images ফোল্ডারে রাখুন এবং সঠিক ফাইলের নাম দিন।
+দাম 0 থাকলে সেটি নমুনা পণ্য; অর্ডার পাঠানো যাবে না।
+*/
 
-category.addEventListener("change", showProducts);
+const productEdits = {
+  1: {
+    name: "প্লাস্টিক কন্টেইনার",
+    category: "কন্টেইনার",
+    price: 50,
+    image: "images/image.jpg",
+    description: "উন্নত মানের প্লাস্টিক কন্টেইনার। পণ্যের সঠিক মাপ, রং ও ব্যবহার সম্পর্কে এখানে লিখুন।"
+  },
 
-sort.addEventListener("change", showProducts);
+  2: {
+    name: "প্লাস্টিক পণ্য 002",
+    category: "অন্যান্য",
+    price: 30,
+    image: "images/image2.jpg",
+    description: "এই পণ্যের বিস্তারিত এখানে লিখুন।"
+  },
 
-showProducts();
+  3: {
+    name: "প্লাস্টিক পণ্য 003",
+    category: "অন্যান্য",
+    price: 40,
+    image: "images/image3.jpg",
+    description: "এই পণ্যের বিস্তারিত এখানে লিখুন।"
+  }
 
+  /*
+  নতুন তথ্য যোগ করার নিয়ম:
+
+  4: {
+    name: "আপনার পণ্যের নাম",
+    category: "আপনার ক্যাটাগরি",
+    price: 100,
+    image: "images/p004.jpg",
+    description: "পণ্যের বিস্তারিত বিবরণ"
+  },
+
+  5: {
+    name: "আরেকটি পণ্য",
+    category: "কন্টেইনার",
+    price: 120,
+    image: "images/p005.jpg",
+    description: "পণ্যের বিবরণ"
+  }
+
+  এভাবে ২০০ পর্যন্ত যোগ করতে পারবেন।
+  প্রতিটি নতুন এন্ট্রির আগে কমা দিতে হবে।
+  */
+
+};
+
+const WHATSAPP_NUMBER = "8801909447236";
+
+function pad3(n) {
+  return String(n).padStart(3, "0");
+}
+
+const products = Array.from({length: 200}, function(_, index) {
+  const n = index + 1;
+  const defaults = {
+    code: "P-" + pad3(n),
+    name: "প্লাস্টিক পণ্য " + pad3(n),
+    category: "অন্যান্য",
+    price: 0,
+    image: "images/p" + pad3(n) + ".jpg",
+    description: "এই পণ্যের বিস্তারিত বিবরণ productEdits অংশে যোগ করুন।"
+  };
+
+  return Object.assign({}, defaults, productEdits[n] || {});
+});
+
+const cart = {};
+const productArea = document.getElementById("products");
+const cartArea = document.getElementById("cartItems");
+const searchInput = document.getElementById("search");
+const categorySelect = document.getElementById("category");
+const modal = document.getElementById("detailsModal");
+let activeProductCode = null;
+
+function money(amount) {
+  return "৳" + Number(amount).toLocaleString("en-US");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, function(ch) {
+    return {
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[ch];
+  });
+}
+
+function findProduct(code) {
+  return products.find(function(p) {
+    return p.code === code;
+  });
+}
+
+function renderCategories() {
+  const current = categorySelect.value;
+  const categories = [...new Set(products.map(p => p.category))];
+
+  categorySelect.innerHTML =
+    '<option value="">সব ক্যাটাগরি</option>' +
+    categories.map(function(c) {
+      return '<option value="' + escapeHTML(c) + '">' +
+        escapeHTML(c) + '</option>';
+    }).join("");
+
+  categorySelect.value = categories.includes(current) ? current : "";
+}
+
+function renderProducts() {
+  const term = searchInput.value.trim().toLowerCase();
+  const cat = categorySelect.value;
+
+  const filtered = products.filter(function(p) {
+    const matchesTerm =
+      (p.name + " " + p.code + " " + p.category).toLowerCase().includes(term);
+    return matchesTerm && (!cat || p.category === cat);
+  });
+
+  document.getElementById("noProducts").hidden = filtered.length > 0;
+  document.getElementById("productCount").textContent = filtered.length;
+
+  productArea.innerHTML = filtered.map(function(p) {
+    const code = escapeHTML(p.code);
+    const name = escapeHTML(p.name);
+    const category = escapeHTML(p.category);
+    const image = escapeHTML(p.image);
+    const priceLabel = p.price > 0 ? money(p.price) : "দাম যোগ করুন";
+    const disabled = p.price > 0 ? "" : "disabled";
+
+    return `
+      <article class="card">
+        <img class="product-image" src="${image}" alt="${name}" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder">📦</div>
+        <div class="card-info">
+          <div class="code">${code}</div>
+          <h3>${name}</h3>
+          <div class="category">${category}</div>
+          <div class="price">${priceLabel}</div>
+          <button type="button" class="details-btn" data-details="${code}">
+            বিস্তারিত দেখুন
+          </button>
+          <button type="button" class="add-btn" data-add="${code}" ${disabled}>
+            + কার্টে যোগ করুন
+          </button>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function addToCart(code) {
+  const p = findProduct(code);
+  if (!p || p.price <= 0) {
+    alert("এই পণ্যের সঠিক দাম আগে যোগ করুন।");
+    return;
+  }
+  cart[code] = (cart[code] || 0) + 1;
+  renderCart();
+}
+
+function changeQuantity(code, amount) {
+  if (!cart[code]) return;
+  cart[code] += amount;
+  if (cart[code] <= 0) delete cart[code];
+  renderCart();
+}
+
+function renderCart() {
+  const codes = Object.keys(cart).filter(code => cart[code] > 0 && findProduct(code));
+  let quantity = 0;
+  let total = 0;
+
+  codes.forEach(function(code) {
+    const p = findProduct(code);
+    quantity += cart[code];
+    total += p.price * cart[code];
+  });
+
+  document.getElementById("cartCount").textContent = quantity;
+  document.getElementById("total").textContent = money(total);
+
+  if (!codes.length) {
+    cartArea.innerHTML = '<p class="empty">আপনার কার্ট এখন খালি।</p>';
+    return;
+  }
+
+  cartArea.innerHTML = codes.map(function(code) {
+    const p = findProduct(code);
+    const qty = cart[code];
+
+    return `
+      <div class="cart-row">
+        <div class="cart-name">${escapeHTML(p.name)}</div>
+        <div class="cart-sub">${money(p.price)} × ${qty} = ${money(p.price * qty)}</div>
+        <div class="cart-controls">
+          <button type="button" class="qty-btn" data-minus="${escapeHTML(code)}">−</button>
+          <strong>${qty}</strong>
+          <button type="button" class="qty-btn" data-plus="${escapeHTML(code)}">+</button>
+          <button type="button" class="remove-btn" data-remove="${escapeHTML(code)}">বাদ দিন</button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function openDetails(code) {
+  const p = findProduct(code);
+  if (!p) return;
+
+  activeProductCode = code;
+  const image = document.getElementById("modalImage");
+  image.style.visibility = "visible";
+  image.onerror = function() { this.style.visibility = "hidden"; };
+  image.src = p.image;
+  image.alt = p.name;
+
+  document.getElementById("modalCategory").textContent = p.category;
+  document.getElementById("modalCode").textContent = "পণ্য কোড: " + p.code;
+  document.getElementById("modalName").textContent = p.name;
+  document.getElementById("modalPrice").textContent =
+    p.price > 0 ? money(p.price) : "দাম যোগ করা হয়নি";
+  document.getElementById("modalDescription").textContent =
+    p.description || "এই পণ্যের বিস্তারিত যোগ করা হয়নি।";
+
+  const addButton = document.getElementById("modalAdd");
+  addButton.disabled = p.price <= 0;
+  addButton.textContent = p.price > 0 ? "+ কার্টে যোগ করুন" : "দাম যোগ করা হয়নি";
+
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDetails() {
+  modal.classList.remove("open");
+  document.body.style.overflow = "";
+  activeProductCode = null;
+}
+
+productArea.addEventListener("click", function(event) {
+  const detailButton = event.target.closest("[data-details]");
+  const addButton = event.target.closest("[data-add]");
+
+  if (detailButton) openDetails(detailButton.dataset.details);
+  else if (addButton) addToCart(addButton.dataset.add);
+});
+
+cartArea.addEventListener("click", function(event) {
+  const minus = event.target.closest("[data-minus]");
+  const plus = event.target.closest("[data-plus]");
+  const remove = event.target.closest("[data-remove]");
+
+  if (minus) changeQuantity(minus.dataset.minus, -1);
+  if (plus) changeQuantity(plus.dataset.plus, 1);
+  if (remove) {
+    delete cart[remove.dataset.remove];
+    renderCart();
+  }
+});
+
+document.getElementById("closeModal").addEventListener("click", closeDetails);
+
+modal.addEventListener("click", function(event) {
+  if (event.target === modal) closeDetails();
+});
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape") closeDetails();
+});
+
+document.getElementById("modalAdd").addEventListener("click", function() {
+  if (activeProductCode) {
+    addToCart(activeProductCode);
+    closeDetails();
+  }
+});
+
+document.getElementById("clearCart").addEventListener("click", function() {
+  Object.keys(cart).forEach(code => delete cart[code]);
+  renderCart();
+});
+
+searchInput.addEventListener("input", renderProducts);
+categorySelect.addEventListener("change", renderProducts);
+
+document.getElementById("orderForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const codes = Object.keys(cart).filter(code => cart[code] > 0 && findProduct(code));
+
+  if (!codes.length) {
+    alert("প্রথমে দাম দেওয়া অন্তত একটি পণ্য কার্টে যোগ করুন।");
+    return;
+  }
+
+  if (codes.some(code => findProduct(code).price <= 0)) {
+    alert("কার্টের প্রতিটি পণ্যের সঠিক দাম থাকতে হবে।");
+    return;
+  }
+
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+  const type = document.getElementById("customerType").value;
+  const note = document.getElementById("customerNote").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("নাম, মোবাইল নম্বর ও ঠিকানা পূরণ করুন।");
+    return;
+  }
+
+  let total = 0;
+  const lines = codes.map(function(code, i) {
+    const p = findProduct(code);
+    const qty = cart[code];
+    const subtotal = p.price * qty;
+    total += subtotal;
+    return (i + 1) + ". " + p.name + " (" + p.code + ")" +
+      "\n" + money(p.price) + " × " + qty + " = " + money(subtotal);
+  });
+
+  const message =
+    "নতুন অর্ডার - AP PLASTIC\n\n" +
+    "ক্রেতার ধরন: " + type + "\n" +
+    "নাম: " + name + "\n" +
+    "মোবাইল: " + phone + "\n" +
+    "ঠিকানা: " + address + "\n\n" +
+    "পণ্যের তালিকা:\n" + lines.join("\n") + "\n\n" +
+    "মোট পণ্যমূল্য: " + money(total) + "\n" +
+    "ডেলিভারি খরচ: পরে নিশ্চিত করতে হবে\n" +
+    (note ? "\nঅতিরিক্ত কথা: " + note : "") +
+    "\n\nAP PLASTIC ওয়েবসাইট থেকে পাঠানো হয়েছে।";
+
+  const url = "https://wa.me/" + WHATSAPP_NUMBER +
+    "?text=" + encodeURIComponent(message);
+
+  window.location.href = url;
+});
+
+renderCategories();
+renderProducts();
+renderCart();
 </script>
-
 </body>
-
 </html>
+
