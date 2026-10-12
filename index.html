@@ -4,8 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AP PLASTIC | Plastic Products</title>
-<meta name="description" content="AP PLASTIC plastic product catalogue and ordering website">
+<title>AP PLASTIC | প্লাস্টিক পণ্য</title>
+<meta name="description" content="AP PLASTIC প্লাস্টিক পণ্যের ক্যাটালগ ও অর্ডার">
 
 <style>
 *{box-sizing:border-box}
@@ -29,7 +29,8 @@ input,select,textarea,button{font:inherit}
 .price{font-size:19px;color:#08794f;font-weight:bold;margin:9px 0}
 button{border:0;border-radius:7px;padding:10px 12px;cursor:pointer}
 .details-btn{width:100%;margin-bottom:7px;background:#e8f3ee;color:#075e45;border:1px solid #08794f}
-.add-btn,.primary{width:100%;background:#08794f;color:white;font-weight:bold}
+.add-btn,.primary,.buy-btn{width:100%;background:#08794f;color:white;font-weight:bold}
+.buy-btn{background:#e68a16;margin-top:7px}
 button:disabled{opacity:.5;cursor:not-allowed}
 .cart,.checkout{background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px #0000000c}
 .cart h2,.checkout h2{font-size:20px;margin:0 0 12px}
@@ -54,13 +55,19 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .modal-price{font-size:24px;font-weight:bold;color:#08794f;margin:12px 0}
 .modal-description{white-space:pre-wrap;line-height:1.7;color:#4b5563;overflow-wrap:anywhere}
 .modal-category{font-size:12px;background:#e8f3ee;padding:5px 10px;border-radius:20px;color:#075e45}
+.popup-content{text-align:center;max-width:380px}
+.popup-icon{font-size:45px;margin:8px}
+.popup-content h2{font-size:22px}
+.popup-content p{color:#59636e;line-height:1.6}
+.popup-content button{margin-top:9px}
+.secondary-btn{width:100%;background:#e8f3ee;color:#075e45;font-weight:bold}
 footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:13px}
 @media(min-width:600px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.product-image,.placeholder{height:170px}}
-@media(min-width:900px){.layout{grid-template-columns:minmax(0,1.7fr) minmax(290px,1fr)}.side{position:sticky;top:10px}}
+@media(min-width:900px){.layout{grid-template-columns:minmax(0,1.7fr) minmax(290px,1fr)}.side{position:sticky;top:10px;align-self:start}}
 </style>
 </head>
-<body>
 
+<body>
 <header>
   <h1>AP PLASTIC</h1>
   <p>Quality Plastic Products</p>
@@ -69,7 +76,7 @@ footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:1
 </header>
 
 <main class="container">
-  <div class="notice">🛍️ পণ্য নির্বাচন করুন, বিস্তারিত দেখুন, কার্টে যোগ করুন এবং WhatsApp-এ অর্ডার পাঠান।</div>
+  <div class="notice">🛍️ পণ্য নির্বাচন করুন, কার্টে যোগ করুন এবং WhatsApp-এ অর্ডার পাঠান।</div>
 
   <div class="tools">
     <input id="search" type="search" placeholder="পণ্যের নাম বা কোড খুঁজুন...">
@@ -77,14 +84,14 @@ footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:1
   </div>
 
   <div class="layout">
-    <section>
+    <section id="productSection">
       <h2>আমাদের পণ্য (<span id="productCount">200</span>)</h2>
       <div id="products" class="products"></div>
       <p id="noProducts" class="empty" hidden>কোনো পণ্য পাওয়া যায়নি।</p>
     </section>
 
     <aside class="side">
-      <section class="cart">
+      <section class="cart" id="cartSection">
         <h2>🛒 কার্ট (<span id="cartCount">0</span>)</h2>
         <div id="cartItems"></div>
         <div class="total"><span>মোট দাম</span><span id="total">৳0</span></div>
@@ -92,7 +99,7 @@ footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:1
         <button id="clearCart" type="button" class="remove-btn">কার্ট খালি করুন</button>
       </section>
 
-      <section class="checkout">
+      <section class="checkout" id="checkoutSection">
         <h2>অর্ডারের তথ্য</h2>
         <form id="orderForm">
           <label for="customerType">ক্রেতার ধরন</label>
@@ -121,6 +128,7 @@ footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:1
   </div>
 </main>
 
+<!-- পণ্যের বিস্তারিত -->
 <div id="detailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
   <div class="modal-content">
     <button id="closeModal" class="close-modal" type="button" aria-label="বন্ধ করুন">×</button>
@@ -130,7 +138,20 @@ footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:1
     <h2 id="modalName"></h2>
     <div id="modalPrice" class="modal-price"></div>
     <p id="modalDescription" class="modal-description"></p>
-    <button id="modalAdd" type="button" class="add-btn">+ কার্টে যোগ করুন</button>
+    <button id="modalAdd" type="button" class="add-btn">কার্টে যোগ করুন</button>
+    <button id="modalBuy" type="button" class="buy-btn">এখনই কিনুন</button>
+  </div>
+</div>
+
+<!-- কার্টে পণ্য যোগের পর পপ-আপ -->
+<div id="addedModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="addedTitle">
+  <div class="modal-content popup-content">
+    <button id="closeAdded" class="close-modal" type="button" aria-label="বন্ধ করুন">×</button>
+    <div class="popup-icon">✅</div>
+    <h2 id="addedTitle">পণ্য কার্টে যোগ হয়েছে!</h2>
+    <p id="addedProductName"></p>
+    <button id="viewCartBtn" type="button" class="primary">কার্ট দেখুন</button>
+    <button id="continueShoppingBtn" type="button" class="secondary-btn">আরও পণ্য কিনুন</button>
   </div>
 </div>
 
@@ -142,24 +163,9 @@ footer{background:#153d32;color:white;text-align:center;padding:20px;font-size:1
 
 <script>
 /*
-==========================================================
-AP PLASTIC - ২০০ পণ্যের ক্যাটালগ
-==========================================================
-
-নাম, দাম, ছবি ও বিবরণ পরিবর্তন করতে productEdits-এ
-পণ্যের নম্বর লিখে তথ্য যোগ করুন।
-
-উদাহরণ:
-1: {
-  name: "প্লাস্টিক কন্টেইনার",
-  category: "কন্টেইনার",
-  price: 50,
-  image: "images/image.jpg",
-  description: "পণ্যের বিস্তারিত বিবরণ"
-}
-
-ছবি images ফোল্ডারে রাখুন এবং সঠিক ফাইলের নাম দিন।
-দাম 0 থাকলে সেটি নমুনা পণ্য; অর্ডার পাঠানো যাবে না।
+পণ্যের নাম, দাম, ছবি ও বিবরণ productEdits-এ পরিবর্তন করুন।
+ছবির নাম ও পথ সঠিক হতে হবে।
+দাম 0 থাকলে পণ্যটি অর্ডার করা যাবে না।
 */
 
 const productEdits = {
@@ -168,9 +174,8 @@ const productEdits = {
     category: "কন্টেইনার",
     price: 50,
     image: "images/image.jpg",
-    description: "উন্নত মানের প্লাস্টিক কন্টেইনার। পণ্যের সঠিক মাপ, রং ও ব্যবহার সম্পর্কে এখানে লিখুন।"
+    description: "উন্নত মানের প্লাস্টিক কন্টেইনার। পণ্যের মাপ, রং ও ব্যবহার সম্পর্কে এখানে লিখুন।"
   },
-
   2: {
     name: "প্লাস্টিক পণ্য 002",
     category: "অন্যান্য",
@@ -178,7 +183,6 @@ const productEdits = {
     image: "images/image2.jpg",
     description: "এই পণ্যের বিস্তারিত এখানে লিখুন।"
   },
-
   3: {
     name: "প্লাস্টিক পণ্য 003",
     category: "অন্যান্য",
@@ -188,28 +192,16 @@ const productEdits = {
   }
 
   /*
-  নতুন তথ্য যোগ করার নিয়ম:
-
+  নতুন পণ্য যোগের উদাহরণ:
+  ,
   4: {
-    name: "আপনার পণ্যের নাম",
-    category: "আপনার ক্যাটাগরি",
-    price: 100,
+    name: "প্লাস্টিকের বাটি",
+    category: "বাটি",
+    price: 25,
     image: "images/p004.jpg",
-    description: "পণ্যের বিস্তারিত বিবরণ"
-  },
-
-  5: {
-    name: "আরেকটি পণ্য",
-    category: "কন্টেইনার",
-    price: 120,
-    image: "images/p005.jpg",
-    description: "পণ্যের বিবরণ"
+    description: "পণ্যের বিস্তারিত"
   }
-
-  এভাবে ২০০ পর্যন্ত যোগ করতে পারবেন।
-  প্রতিটি নতুন এন্ট্রির আগে কমা দিতে হবে।
   */
-
 };
 
 const WHATSAPP_NUMBER = "8801909447236";
@@ -226,9 +218,8 @@ const products = Array.from({length: 200}, function(_, index) {
     category: "অন্যান্য",
     price: 0,
     image: "images/p" + pad3(n) + ".jpg",
-    description: "এই পণ্যের বিস্তারিত বিবরণ productEdits অংশে যোগ করুন।"
+    description: "এই পণ্যের বিস্তারিত productEdits অংশে যোগ করুন।"
   };
-
   return Object.assign({}, defaults, productEdits[n] || {});
 });
 
@@ -237,7 +228,8 @@ const productArea = document.getElementById("products");
 const cartArea = document.getElementById("cartItems");
 const searchInput = document.getElementById("search");
 const categorySelect = document.getElementById("category");
-const modal = document.getElementById("detailsModal");
+const detailsModal = document.getElementById("detailsModal");
+const addedModal = document.getElementById("addedModal");
 let activeProductCode = null;
 
 function money(amount) {
@@ -304,15 +296,24 @@ function renderProducts() {
           <h3>${name}</h3>
           <div class="category">${category}</div>
           <div class="price">${priceLabel}</div>
-          <button type="button" class="details-btn" data-details="${code}">
-            বিস্তারিত দেখুন
-          </button>
-          <button type="button" class="add-btn" data-add="${code}" ${disabled}>
-            + কার্টে যোগ করুন
-          </button>
+          <button type="button" class="details-btn" data-details="${code}">বিস্তারিত দেখুন</button>
+          <button type="button" class="add-btn" data-add="${code}" ${disabled}>কার্টে যোগ করুন</button>
+          <button type="button" class="buy-btn" data-buy="${code}" ${disabled}>এখনই কিনুন</button>
         </div>
       </article>`;
   }).join("");
+}
+
+function showAddedPopup(product) {
+  document.getElementById("addedProductName").textContent =
+    product.name + " কার্টে যোগ হয়েছে।";
+  addedModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeAddedPopup() {
+  addedModal.classList.remove("open");
+  document.body.style.overflow = "";
 }
 
 function addToCart(code) {
@@ -321,8 +322,33 @@ function addToCart(code) {
     alert("এই পণ্যের সঠিক দাম আগে যোগ করুন।");
     return;
   }
+
   cart[code] = (cart[code] || 0) + 1;
   renderCart();
+  closeDetails();
+  showAddedPopup(p);
+}
+
+function buyNow(code) {
+  const p = findProduct(code);
+  if (!p || p.price <= 0) {
+    alert("এই পণ্যের সঠিক দাম আগে যোগ করুন।");
+    return;
+  }
+
+  cart[code] = (cart[code] || 0) + 1;
+  renderCart();
+  closeDetails();
+  closeAddedPopup();
+
+  document.getElementById("checkoutSection").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  setTimeout(function() {
+    document.getElementById("customerName").focus({preventScroll:true});
+  }, 450);
 }
 
 function changeQuantity(code, amount) {
@@ -333,7 +359,10 @@ function changeQuantity(code, amount) {
 }
 
 function renderCart() {
-  const codes = Object.keys(cart).filter(code => cart[code] > 0 && findProduct(code));
+  const codes = Object.keys(cart).filter(function(code) {
+    return cart[code] > 0 && findProduct(code);
+  });
+
   let quantity = 0;
   let total = 0;
 
@@ -388,16 +417,16 @@ function openDetails(code) {
   document.getElementById("modalDescription").textContent =
     p.description || "এই পণ্যের বিস্তারিত যোগ করা হয়নি।";
 
-  const addButton = document.getElementById("modalAdd");
-  addButton.disabled = p.price <= 0;
-  addButton.textContent = p.price > 0 ? "+ কার্টে যোগ করুন" : "দাম যোগ করা হয়নি";
+  const disabled = p.price <= 0;
+  document.getElementById("modalAdd").disabled = disabled;
+  document.getElementById("modalBuy").disabled = disabled;
 
-  modal.classList.add("open");
+  detailsModal.classList.add("open");
   document.body.style.overflow = "hidden";
 }
 
 function closeDetails() {
-  modal.classList.remove("open");
+  detailsModal.classList.remove("open");
   document.body.style.overflow = "";
   activeProductCode = null;
 }
@@ -405,9 +434,11 @@ function closeDetails() {
 productArea.addEventListener("click", function(event) {
   const detailButton = event.target.closest("[data-details]");
   const addButton = event.target.closest("[data-add]");
+  const buyButton = event.target.closest("[data-buy]");
 
   if (detailButton) openDetails(detailButton.dataset.details);
   else if (addButton) addToCart(addButton.dataset.add);
+  else if (buyButton) buyNow(buyButton.dataset.buy);
 });
 
 cartArea.addEventListener("click", function(event) {
@@ -425,24 +456,56 @@ cartArea.addEventListener("click", function(event) {
 
 document.getElementById("closeModal").addEventListener("click", closeDetails);
 
-modal.addEventListener("click", function(event) {
-  if (event.target === modal) closeDetails();
-});
-
-document.addEventListener("keydown", function(event) {
-  if (event.key === "Escape") closeDetails();
+detailsModal.addEventListener("click", function(event) {
+  if (event.target === detailsModal) closeDetails();
 });
 
 document.getElementById("modalAdd").addEventListener("click", function() {
-  if (activeProductCode) {
-    addToCart(activeProductCode);
+  if (activeProductCode) addToCart(activeProductCode);
+});
+
+document.getElementById("modalBuy").addEventListener("click", function() {
+  if (activeProductCode) buyNow(activeProductCode);
+});
+
+document.getElementById("closeAdded").addEventListener("click", closeAddedPopup);
+
+addedModal.addEventListener("click", function(event) {
+  if (event.target === addedModal) closeAddedPopup();
+});
+
+document.getElementById("viewCartBtn").addEventListener("click", function() {
+  closeAddedPopup();
+  document.getElementById("cartSection").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+document.getElementById("continueShoppingBtn").addEventListener("click", function() {
+  closeAddedPopup();
+  document.getElementById("productSection").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape") {
     closeDetails();
+    closeAddedPopup();
   }
 });
 
 document.getElementById("clearCart").addEventListener("click", function() {
-  Object.keys(cart).forEach(code => delete cart[code]);
-  renderCart();
+  if (!Object.keys(cart).length) {
+    alert("কার্ট ইতিমধ্যে খালি।");
+    return;
+  }
+  if (confirm("আপনি কি কার্টের সব পণ্য মুছে ফেলতে চান?")) {
+    Object.keys(cart).forEach(code => delete cart[code]);
+    renderCart();
+  }
 });
 
 searchInput.addEventListener("input", renderProducts);
@@ -451,7 +514,9 @@ categorySelect.addEventListener("change", renderProducts);
 document.getElementById("orderForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  const codes = Object.keys(cart).filter(code => cart[code] > 0 && findProduct(code));
+  const codes = Object.keys(cart).filter(function(code) {
+    return cart[code] > 0 && findProduct(code);
+  });
 
   if (!codes.length) {
     alert("প্রথমে দাম দেওয়া অন্তত একটি পণ্য কার্টে যোগ করুন।");
@@ -508,4 +573,3 @@ renderCart();
 </script>
 </body>
 </html>
-
